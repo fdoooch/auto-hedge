@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  auto-hedge:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: auto-hedge
+    volumes:
+      - ./app/:/app/
+      - ./logs/:/logs/
+      - ./.env:/.env
+    working_dir: /
+    env_file:
+      - .env
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    command: ["python", "-m", "app.main"]
